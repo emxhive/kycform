@@ -16,7 +16,6 @@ type KYCCategory = {
     info: any;
     fields?: string[];
     optional?: number;
-
   };
 };
 
@@ -26,6 +25,10 @@ type KYCTFormParams = {
   fields: KYCCategory;
 };
 
-
-
 type CatKey = "personal" | "address" | "document";
+
+type FormDataTyp = {
+  name: string;
+  value: any;
+  required: boolean;
+}[];

@@ -8,15 +8,52 @@ import back from "./img/id-back.svg";
 import none from "./img/noimage.jpg";
 
 export default function KYCF({ header, info, fields }: KYCTFormParams) {
-  const formData = useRef({});
+  //FORM DATA
+  // fields.address.
+
+  //PAGE NAVIGATION
   const [pgCount, setPgCount] = useState(0);
+  //PAGE NAVIGATION
+
+  //Form Data Seperate for each page
+  const formData: React.MutableRefObject<FormDataTyp[]> = useRef([[], [], []]);
+
+  useEffect(() => {
+    //INITIALIZING FORM DATA
+    if (!formData.current[pgCount].length && pgCount != 2) {
+      fields[categories[pgCount]].fields?.forEach((name, i) => {
+        formData.current[pgCount].push({
+          name: name,
+          value: "",
+          required: i != fields[categories[pgCount]].optional,
+        });
+      });
+
+      console.log(formData.current);
+    }
+  }, [pgCount]);
+
+  ////ERRORS
+  const [errors, setErrors] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  //
+
+  ///VALIDATE ERRORS
+  function valErrs() {}
+  ///
+
+  ////FILES UPLOAD
   const [idType, setIdType] = useState(0);
   const [fileFace, setFileFace] = useState("front");
-  const idRef = useRef({
-    front: {},
-    back: {},
-  });
+
   const [idView, setidView] = useState({ front: undefined, back: undefined });
+  //FILE UPLOAD
 
   const customButton = (label: string, i: number) => {
     let className = idType == i ? ss.select : ss.unselect;
@@ -66,13 +103,15 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
 
   //
   const uploadFace = (direction: "front" | "back" | string) => {
+    const i = ["front", "back"].indexOf(direction);
+
     return (
       <div className={ss.two}>
         <div className={ss.uploadbox}>
           <input
             onChange={(e) => {
               if (e.target.files?.length) {
-                idRef.current[direction] = e.target.files[0];
+                formData.current[pgCount][i].value = e.target.files[0];
                 setidView({
                   ...idView,
                   [direction]: URL.createObjectURL(e.target.files[0]),
@@ -185,6 +224,7 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
 }
 
 const idfaces = { front, back };
+const categories: CatKey[] = ["personal", "address", "document"];
 const arrows = {
   front: "pi pi-arrow-right",
   back: "pi pi-arrow-left",
