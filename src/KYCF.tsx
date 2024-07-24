@@ -17,9 +17,6 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
     back: {},
   });
   const [idView, setidView] = useState({ front: undefined, back: undefined });
-  useEffect(() => {
-    console.log(idType);
-  }, [idType]);
 
   const customButton = (label: string, i: number) => {
     let className = idType == i ? ss.select : ss.unselect;
@@ -67,7 +64,7 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
     }
   };
 
-  //cURENT
+  //
   const uploadFace = (direction: "front" | "back" | string) => {
     return (
       <div className={ss.two}>
@@ -110,22 +107,21 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
   };
   //
 
-  const normalTemplate = (content: KYCCategory[CatKey]) => {
+  const normalTemplate = (content?: KYCCategory[CatKey]) => {
     let body = <></>;
     switch (pgCount) {
       case 2:
         body = (
           <div className={ss.uploadbody}>
             <div className={ss.one}>
-              {content.fields?.map((id, i) => customButton(id, i))}
+              {content?.fields?.map((id, i) => customButton(id, i))}
             </div>
 
             {uploadFace(fileFace)}
           </div>
         );
         break;
-      case 3:
-        break;
+
       default:
         body = normalTempBody(content);
     }
@@ -135,9 +131,9 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
           <div className={ss.head}>
             <div className={ss.counter}>{"0" + (pgCount + 1)}</div>
             <div className={ss.headerBox}>
-              <div className={ss.title}>{content.title}</div>
+              <div className={ss.title}>{content?.title}</div>
               <div className={ss.info}>
-                {pgCount == 2 ? uploadText : inputText}
+                {pgCount == 2 ? content?.info : inputText}
               </div>
             </div>
           </div>
@@ -152,6 +148,7 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
     normalTemplate(fields.personal),
     normalTemplate(fields.address),
     normalTemplate(fields.document),
+    finalPage(),
   ];
 
   return (
@@ -162,7 +159,7 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
       </div>
       {pages[pgCount]}
       <div className={ss.btngroup}>
-        {pgCount > 0 ? (
+        {pgCount > 0 && pgCount < 3 ? (
           <Button
             variant="contained"
             onClick={() => {
@@ -172,14 +169,16 @@ export default function KYCF({ header, info, fields }: KYCTFormParams) {
             Previous
           </Button>
         ) : undefined}
-        <Button
-          onClick={() => {
-            setPgCount((p) => p + 1);
-          }}
-          variant="contained"
-        >
-          Next
-        </Button>
+        {pgCount < 3 ? (
+          <Button
+            onClick={() => {
+              setPgCount((p) => p + 1);
+            }}
+            variant="contained"
+          >
+            Next
+          </Button>
+        ) : undefined}
       </div>
     </div>
   );
@@ -216,6 +215,17 @@ const normalTempBody = (content) => {
           );
         }
       })}
+    </div>
+  );
+};
+
+const finalPage = () => {
+  return (
+    <div className={ss.page}>
+      <Paper className={ss.content + " " + ss.lastcontent}>
+        Your Information is under review. <br />
+        We'll get back to you shortly
+      </Paper>
     </div>
   );
 };

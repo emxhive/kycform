@@ -13,7 +13,7 @@ type KYCCategory = {
   };
   document: {
     title: string;
-    info: string;
+    info: any;
     fields?: string[];
     optional?: number;
 

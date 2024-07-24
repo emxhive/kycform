@@ -5,7 +5,13 @@ import Tailwind from "primereact/passthrough/tailwind";
 
 function App() {
   return (
-    <PrimeReactProvider value={{ unstyled: true, pt: Tailwind , ptOptions: {mergeSections : true }}}>
+    <PrimeReactProvider
+      value={{
+        unstyled: true,
+        pt: Tailwind,
+        ptOptions: { mergeSections: true },
+      }}
+    >
       <div className="App" style={{ height: "100vh" }}>
         <KYCF
           header={headerinfo.header}
@@ -20,8 +26,8 @@ function App() {
 export default App;
 
 const headerinfo = {
-  header: "KYC Verification",
-  info: "To comply with regulations, each user must go through identity verification to help regulate fraud cases",
+  header: "KYC VERIFICATION",
+  info: "  ",
 };
 
 const categories: KYCCategory = {
@@ -55,7 +61,7 @@ const categories: KYCCategory = {
 
   document: {
     title: "Document Upload",
-    info: "To verify your identity, please upload any of the supported document",
+    info: "Unclear images & Expired documents & Images with glare will all be rejected",
     fields: ["Passport", "National ID ", "Driver License"],
   },
 };
