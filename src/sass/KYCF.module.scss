@@ -130,6 +130,7 @@
                     @include media("<=phone") {
                         flex-direction: column;
                         row-gap: 20px;
+                        align-items: center;
                     }
 
                     .btn {
@@ -165,7 +166,7 @@
                         }
 
                         @include media("<=phone") {
-                            width: 85%;
+                            width: 97%;
                         }
     
                     }
